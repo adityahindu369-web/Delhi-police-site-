@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAMPIONS 26.0 Maths Special LIVE - Subjects</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #000;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.hidden {
+            display: none;
+        }
+
+        .modal-content {
+            background: linear-gradient(to bottom, #1a2a1a 0%, #0d1a0d 100%);
+            border-radius: 25px;
+            padding: 40px 30px;
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid #2d4a2d;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .whatsapp-icon {
+            width: 90px;
+            height: 90px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-icon svg {
+            width: 50px;
+            height: 50px;
+            fill: white;
+        }
+
+        .modal-title {
+            color: white;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .modal-subtitle {
+            color: #8a8a8a;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .modal-updates {
+            color: #25D366;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 35px;
+            letter-spacing: 0.5px;
+        }
+
+        .join-btn {
+            background: #25D366;
+            color: #000;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 15px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .join-btn:active {
+            transform: scale(0.98);
+        }
+
+        .join-btn:hover {
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+        }
+
+        .join-btn svg {
+            width: 28px;
+            height: 28px;
+            fill: #000;
+        }
+
+        .already-joined {
+            color: #5a5a5a;
+            font-size: 15px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .already-joined:hover {
+            color: #7a7a7a;
+        }
+
+        .header {
+            background: transparent;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .back-btn {
+            display: none;
+        }
+
+        .header-title {
+            color: WHITE;
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        .content {
+            padding: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+            background: #000;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            background: #1E1E26;
+            border: 2px solid #626EEF;
+            border-radius: 15px;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #25D366;
+            box-shadow: 0 0 0 2px rgba(37, 211, 102, 0.2);
+        }
+
+        .search-input::placeholder {
+            color: #8a8a8a;
+        }
+
+        .subject-card {
+            background: #1E1E26;
+            border-radius: 15px;
+            padding: 20px 25px;
+            margin-bottom: 15px;
+            font-size: 17px;
+            color: #FFFFFF;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(98, 110, 239, 0.2);
+            border-bottom: 2px solid #626EEF;
+            position: relative;
+            overflow: hidden;
+            display: block;
+            text-align: center;
+        }
+
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #626EEF 0%, #D4AF37 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .subject-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .subject-card:active {
+            transform: scale(0.98);
+        }
+
+        .subject-card:hover {
+            box-shadow: 0 6px 20px rgba(98, 110, 239, 0.4);
+            transform: translateY(-3px);
+            border-bottom-color: #D4AF37;
+        }
+
+        .chapter-list {
+            display: none;
+        }
+
+        .chapter-list.active {
+            display: block;
+        }
+
+        .chapter-card {
+            background: #2a2a35;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #FFFFFF;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border-left: 4px solid #25D366;
+            text-decoration: none;
+            display: block;
+        }
+
+        .chapter-card:hover {
+            background: #353542;
+            transform: translateX(5px);
+        }
+
+        .chapter-card:active {
+            transform: scale(0.98);
+        }
+
+        .back-to-subjects {
+            background: #626EEF;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-subjects:hover {
+            background: #4a58e8;
+        }
+
+        .subject-title {
+            color: #25D366;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+            padding: 10px;
+            border-bottom: 2px solid #25D366;
+        }
+
+        .no-results {
+            color: #8a8a8a;
+            text-align: center;
+            padding: 20px;
+            font-size: 16px;
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            .modal-content {
+                padding: 35px 25px;
+            }
+
+            .modal-title {
+                font-size: 28px;
+            }
+
+            .whatsapp-icon {
+                width: 80px;
+                height: 80px;
+            }
+
+            .whatsapp-icon svg {
+                width: 45px;
+                height: 45px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <div class="whatsapp-icon">
+                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 0C7.164 0 0 7.163 0 16c0 2.816.736 5.464 2.014 7.762L.064 30.935l7.516-1.97A15.937 15.937 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333c-2.4 0-4.658-.636-6.616-1.746l-.473-.28-4.91 1.287 1.31-4.785-.308-.492A13.283 13.283 0 012.667 16c0-7.364 5.97-13.333 13.333-13.333S29.333 8.636 29.333 16 23.364 29.333 16 29.333z"/>
+                    <path d="M12.136 9.52c-.285-.632-.586-.645-.858-.656-.222-.009-.476-.008-.73-.008-.255 0-.668.096-.1018.475-.366.38-1.397 1.365-1.397 3.328 0 1.964 1.429 3.862 1.628 4.127.198.265 2.8 4.272 6.782 5.992.947.409 1.688.654 2.265.837.951.302 1.816.26 2.5.157.762-.114 2.347-.96 2.678-1.887.331-.927.331-1.722.232-1.887-.1-.165-.365-.265-.762-.464-.397-.199-2.348-1.159-2.713-1.291-.365-.133-.631-.199-.897.199-.265.397-1.03 1.291-1.262 1.557-.232.265-.464.298-.861.1-.397-.2-1.678-.619-3.196-1.973-1.182-1.053-1.98-2.354-2.212-2.751-.232-.397-.025-.612.175-.81.179-.178.397-.464.596-.696.198-.232.265-.398.397-.663.133-.265.066-.497-.033-.696-.1-.199-.897-2.162-1.229-2.96z"/>
+                </svg>
+            </div>
+            <div class="modal-title">OFFICIAL CHANNEL</div>
+            <div class="modal-subtitle">Join kar lo more free apps ke liye.</div>
+            <div class="modal-updates">ALL NEW UPDATES</div>
+            <a href="https://whatsapp.com/channel/0029Vb7dU6OFi8xZakWrnz42" class="join-btn" target="_blank">
+                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 0C7.164 0 0 7.163 0 16c0 2.816.736 5.464 2.014 7.762L.064 30.935l7.516-1.97A15.937 15.937 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333c-2.4 0-4.658-.636-6.616-1.746l-.473-.28-4.91 1.287 1.31-4.785-.308-.492A13.283 13.283 0 012.667 16c0-7.364 5.97-13.333 13.333-13.333S29.333 8.636 29.333 16 23.364 29.333 16 29.333z"/>
+                    <path d="M12.136 9.52c-.285-.632-.586-.645-.858-.656-.222-.009-.476-.008-.73-.008-.255 0-.668.096-.1018.475-.366.38-1.397 1.365-1.397 3.328 0 1.964 1.429 3.862 1.628 4.127.198.265 2.8 4.272 6.782 5.992.947.409 1.688.654 2.265.837.951.302 1.816.26 2.5.157.762-.114 2.347-.96 2.678-1.887.331-.927.331-1.722.232-1.887-.1-.165-.365-.265-.762-.464-.397-.199-2.348-1.159-2.713-1.291-.365-.133-.631-.199-.897.199-.265.397-1.03 1.291-1.262 1.557-.232.265-.464.298-.861.1-.397-.2-1.678-.619-3.196-1.973-1.182-1.053-1.98-2.354-2.212-2.751-.232-.397-.025-.612.175-.81.179-.178.397-.464.596-.696.198-.232.265-.398.397-.663.133-.265.066-.497-.033-.696-.1-.199-.897-2.162-1.229-2.96z"/>
+                </svg>
+                JOIN NOW
+            </a>
+            <div class="already-joined" onclick="closeModal()">I have already joined</div>
+        </div>
+    </div>
+
+    <div class="header">
+        <button class="back-btn"></button>
+        <div class="header-title"></div>
+    </div>
+
+    <div class="content" id="mainContent">
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search subjects...">
+        </div>
+
+        <!-- No Results Message -->
+        <div class="no-results" id="noResults">No subjects found</div>
+
+        <!-- Subjects List (Default View) -->
+        <div id="subjectsList">
+            <!-- All subjects will be dynamically added here -->
+        </div>
+
+        <!-- Chapters Lists (Hidden by default) -->
+        <div id="chaptersContainer">
+            <!-- All chapter lists will be dynamically added here -->
+        </div>
+    </div>
+
+    <script>
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.add('hidden');
+        }
+
+        // Show modal on page load
+        window.addEventListener('load', function() {
+            document.getElementById('modalOverlay').classList.remove('hidden');
+            
+            // Load subjects after modal
+            setTimeout(loadSubjects, 100);
+        });
+
+        // New subjects data with the provided subjects
+        const subjectsData = [
+            {
+                name: "2D",
+                id: "2d",
+                chapters: [
+                    { name: "Mensuration 01", link: "#" },
+                    { name: "Mensuration 02", link: "#" },
+                    { name: "Mensuration 03", link: "#" },
+                    { name: "Mensuration 04", link: "#" }
+                ]
+            },
+            {
+                name: "DI",
+                id: "di",
+                chapters: [
+                    { name: "DI 01", link: "#" },
+                    { name: "DI 02", link: "#" },
+                    { name: "DI 03", link: "#" },
+                    { name: "DI 04", link: "#" },
+                    { name: "DI 05", link: "#" },
+                    { name: "DI 06", link: "#" },
+                    { name: "DI 07", link: "#" },
+                    { name: "DI 08", link: "#" },
+                    { name: "DI 09", link: "#" },
+                    { name: "DI 10", link: "#" },
+                    { name: "DI 11", link: "#" },
+                    { name: "DI 12", link: "#" },
+                    { name: "DI 13", link: "#" },
+                    { name: "DI 14", link: "#" },
+                    { name: "DI 15", link: "#" },
+                    { name: "DI 16", link: "#" }
+                ]
+            },
+            {
+                name: "Simplification",
+                id: "simplification",
+                chapters: [
+                    { name: "Simplification 01", link: "#" },
+                    { name: "Simplification 02", link: "#" },
+                    { name: "Simplification 03", link: "#" },
+                    { name: "Simplification 04", link: "#" }
+                ]
+            },
+            {
+                name: "Time and Work Pipe and Cistern",
+                id: "time-work-pipe-cistern",
+                chapters: [
+                    { name: "Time and work 01", link: "#" },
+                    { name: "Time and work 02", link: "#" },
+                    { name: "Time and work 03", link: "#" },
+                    { name: "Pipe and cistern 01", link: "#" },
+                    { name: "Pipe and cistern 02", link: "#" },
+                    { name: "Pipe and cistern 03", link: "#" }
+                ]
+            },
+            {
+                name: "SI CI",
+                id: "si-ci",
+                chapters: [
+                    { name: "SI 01", link: "#" },
+                    { name: "SI 02", link: "#" },
+                    { name: "SI 03", link: "#" },
+                    { name: "SI 04", link: "#" },
+                    { name: "CI 01", link: "#" },
+                    { name: "CI 02", link: "#" },
+                    { name: "CI 03", link: "#" },
+                    { name: "CI 04", link: "#" },
+                    { name: "CI 05", link: "#" },
+                    { name: "CI 06", link: "#" },
+                    { name: "CI 07", link: "#" },
+                    { name: "CI 08", link: "#" }
+                ]
+            },
+            {
+                name: "Surd and Index",
+                id: "surd-index",
+                chapters: [
+                    { name: "Surd and index 01", link: "#" },
+                    { name: "Surd and index 02", link: "#" },
+                    { name: "Surd and index 03", link: "#" },
+                    { name: "Surd and index 04", link: "#" },
+                    { name: "Surd and index 05", link: "#" },
+                    { name: "Surd and index 06", link: "#" },
+                    { name: "Surd and index 07", link: "#" },
+                    { name: "Surd and index 08", link: "#" },
+                    { name: "Surd and index 09", link: "#" }
+                ]
+            },
+            {
+                name: "LCM HCF",
+                id: "lcm-hcf",
+                chapters: [
+                    { name: "LCM HCF 01", link: "#" },
+                    { name: "LCM HCF 02", link: "#" },
+                    { name: "LCM HCF 03", link: "#" },
+                    { name: "LCM HCF 04", link: "#" },
+                    { name: "LCM HCF 05", link: "#" },
+                    { name: "LCM HCF 06", link: "#" },
+                    { name: "LCM HCF 07", link: "#" },
+                    { name: "LCM HCF 08", link: "#" },
+                    { name: "LCM HCF 09", link: "#" },
+                    { name: "LCM HCF 10", link: "#" }
+                ]
+            },
+            {
+                name: "Profit and Loss",
+                id: "profit-loss",
+                chapters: [
+                    { name: "Profit and loss 01", link: "#" },
+                    { name: "Profit and loss 02", link: "#" },
+                    { name: "Profit and loss 03", link: "#" },
+                    { name: "Profit and loss 04", link: "#" },
+                    { name: "Profit and loss 05", link: "#" },
+                    { name: "Profit and loss 06", link: "#" },
+                    { name: "Profit and loss 07", link: "#" },
+                    { name: "Profit and loss 08", link: "#" },
+                    { name: "Profit and loss 09", link: "#" },
+                    { name: "Profit and loss 10", link: "#" },
+                    { name: "Profit and loss 11", link: "#" },
+                    { name: "Profit and loss 12", link: "#" },
+                    { name: "Profit and loss 13", link: "#" },
+                    { name: "Profit and loss 14", link: "#" },
+                    { name: "Profit and loss 15", link: "#" },
+                    { name: "Profit and loss 16", link: "#" }
+                ]
+            },
+            {
+                name: "Number System",
+                id: "number-system",
+                chapters: [
+                    { name: "Classification of number 01", link: "#" },
+                    { name: "Classification of number 02", link: "#" },
+                    { name: "Classification of number 03", link: "#" },
+                    { name: "Unit digit 01", link: "#" },
+                    { name: "Unit digit 02", link: "#" },
+                    { name: "Unit digit 03", link: "#" },
+                    { name: "Factor 01", link: "#" },
+                    { name: "Factor 02", link: "#" },
+                    { name: "Factor 03", link: "#" },
+                    { name: "Factor 04", link: "#" },
+                    { name: "Divisibility 01", link: "#" },
+                    { name: "Divisibility 02", link: "#" },
+                    { name: "Divisibility 03", link: "#" },
+                    { name: "Divisibility 04", link: "#" },
+                    { name: "Divisibility 05", link: "#" },
+                    { name: "Divisibility 06", link: "#" },
+                    { name: "Divisibility 07", link: "#" },
+                    { name: "Divisibility 08", link: "#" },
+                    { name: "Divisibility 09", link: "#" },
+                    { name: "Divisibility 10", link: "#" },
+                    { name: "Remainder 01", link: "#" },
+                    { name: "Remainder 02", link: "#" },
+                    { name: "Remainder 03", link: "#" },
+                    { name: "Remainder 04", link: "#" },
+                    { name: "Remainder 05", link: "#" },
+                    { name: "Remainder 06", link: "#" },
+                    { name: "Number system 01", link: "#" },
+                    { name: "Number system 02", link: "#" },
+                    { name: "Number system 03", link: "#" },
+                    { name: "Digital sum 01", link: "https://filetolink82ii-1-a84d33b9aa38.herokuapp.com/stream/993086?hash=635eca" },
+                    { name: "Digital sum 02", link: "https://filetolink82ii-1-a84d33b9aa38.herokuapp.com/stream/993088?hash=6e0b28" },
+                    { name: "Calculation 01", link: "#" },
+                    { name: "Calculation 02", link: "#" },
+                    { name: "Calculation 03", link: "#" },
+                    { name: "Calculation 04", link: "#" },
+                    { name: "Calculation 05", link: "#" },
+                    { name: "Calculation 06", link: "#" }
+                ]
+            },
+            {
+                name: "Persentage",
+                id: "percentage",
+                chapters: [
+                    { name: "Persentage 01", link: "#" },
+                    { name: "Persentage 02", link: "#" },
+                    { name: "Persentage 03", link: "#" },
+                    { name: "Persentage 04", link: "#" },
+                    { name: "Persentage 05", link: "#" },
+                    { name: "Persentage 06", link: "#" },
+                    { name: "Persentage 07", link: "#" },
+                    { name: "Persentage 08", link: "#" },
+                    { name: "Persentage 09", link: "#" },
+                    { name: "Persentage 10", link: "#" },
+                    { name: "Persentage 11", link: "#" },
+                    { name: "Persentage 12", link: "#" },
+                    { name: "Persentage 13", link: "#" }
+                ]
+            }
+        ];
+
+        function loadSubjects() {
+            const subjectsList = document.getElementById('subjectsList');
+            const chaptersContainer = document.getElementById('chaptersContainer');
+            
+            // Clear existing content
+            subjectsList.innerHTML = '';
+            chaptersContainer.innerHTML = '';
+            
+            // Add subjects
+            subjectsData.forEach((subject, index) => {
+                // Create subject card
+                const subjectCard = document.createElement('div');
+                subjectCard.className = 'subject-card';
+                subjectCard.textContent = subject.name;
+                subjectCard.dataset.name = subject.name.toLowerCase();
+                subjectCard.onclick = () => showChapters(subject.id);
+                subjectsList.appendChild(subjectCard);
+                
+                // Create chapter list for this subject
+                const chapterList = document.createElement('div');
+                chapterList.className = 'chapter-list';
+                chapterList.id = `chapters-${subject.id}`;
+                
+                // Add back button
+                const backButton = document.createElement('button');
+                backButton.className = 'back-to-subjects';
+                backButton.textContent = '← Back to Subjects';
+                backButton.onclick = showSubjects;
+                chapterList.appendChild(backButton);
+                
+                // Add subject title
+                const subjectTitle = document.createElement('div');
+                subjectTitle.className = 'subject-title';
+                subjectTitle.textContent = subject.name;
+                chapterList.appendChild(subjectTitle);
+                
+                // Add chapters
+                subject.chapters.forEach(chapter => {
+                    const chapterCard = document.createElement('a');
+                    chapterCard.className = 'chapter-card';
+                    chapterCard.href = chapter.link;
+                    chapterCard.target = '_blank';
+                    chapterCard.textContent = chapter.name;
+                    chapterList.appendChild(chapterCard);
+                });
+                
+                chaptersContainer.appendChild(chapterList);
+            });
+        }
+
+        function showChapters(subjectId) {
+            // Hide all subjects
+            document.getElementById('subjectsList').style.display = 'none';
+            document.querySelector('.search-container').style.display = 'none';
+            document.getElementById('noResults').style.display = 'none';
+            
+            // Hide all chapter lists
+            const allChapterLists = document.querySelectorAll('.chapter-list');
+            allChapterLists.forEach(list => {
+                list.classList.remove('active');
+            });
+            
+            // Show the selected chapter list
+            const selectedChapterList = document.getElementById(`chapters-${subjectId}`);
+            if (selectedChapterList) {
+                selectedChapterList.classList.add('active');
+            }
+        }
+
+        function showSubjects() {
+            // Show subjects list and search
+            document.getElementById('subjectsList').style.display = 'block';
+            document.querySelector('.search-container').style.display = 'block';
+            document.getElementById('noResults').style.display = 'none';
+            
+            // Hide all chapter lists
+            const allChapterLists = document.querySelectorAll('.chapter-list');
+            allChapterLists.forEach(list => {
+                list.classList.remove('active');
+            });
+            
+            // Clear search input
+            document.getElementById('searchInput').value = '';
+            
+            // Show all subjects
+            const allSubjectCards = document.querySelectorAll('.subject-card');
+            allSubjectCards.forEach(card => {
+                card.style.display = 'block';
+            });
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const subjectCards = document.querySelectorAll('.subject-card');
+            const noResults = document.getElementById('noResults');
+            
+            let visibleCount = 0;
+            
+            subjectCards.forEach(card => {
+                const subjectName = card.dataset.name;
+                if (subjectName.includes(searchTerm)) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Show/hide no results message
+            if (visibleCount === 0 && searchTerm !== '') {
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
+            }
+        });
+
+        // Initialize
+        loadSubjects();
+    </script>
+</body>
+</html>
